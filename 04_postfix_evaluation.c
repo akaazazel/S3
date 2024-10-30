@@ -1,82 +1,73 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
+#include <stdlib.h>
 
 #define MAX 100
 
-struct Stack {
-    int top;
-    int items[MAX];
-};
+int stack[MAX];
+int top = -1;
 
-void initStack(struct Stack* stack) {
-    stack->top = -1;
-}
-
-int isEmpty(struct Stack* stack) {
-    return stack->top == -1;
-}
-
-void push(struct Stack* stack, int value) {
-    if (stack->top == MAX - 1) {
-        printf("Stack overflow\n");
-        return;
+void push(int x) {
+    if(top == MAX - 1) {
+        printf("Stack Overflow\n");
+    } else {
+        stack[++top] = x;
     }
-    stack->items[++stack->top] = value;
 }
 
-int pop(struct Stack* stack) {
-    if (isEmpty(stack)) {
-        printf("Stack underflow\n");
+int pop() {
+    if(top == -1) {
+        printf("Stack Underflow\n");
         return -1;
+    } else {
+        return stack[top--];
     }
-    return stack->items[stack->top--];
 }
 
-int evaluatePostfix(char* expression) {
-    struct Stack stack;
-    initStack(&stack);
+int evaluatePostfix(char* exp) {
+    int i;
+    
+    for(i = 0; exp[i] != '\0'; i++) {
+        char ch = exp[i];
 
-    for (int i = 0; expression[i] != '\0'; i++) {
-        if (isdigit(expression[i])) {
-            push(&stack, expression[i] - '0');
-        } 
-        else {
-            int operand2 = pop(&stack);
-            int operand1 = pop(&stack);
-            int result;
-
-            switch (expression[i]) {
-                case '+':
-                    result = operand1 + operand2;
+        if(isdigit(ch)) {
+            push(ch - '0'); 
+        } else {
+            int val2 = pop();
+            int val1 = pop();
+            
+            switch(ch) {
+                case '+': push(val1 + val2); break;
+                case '-': push(val1 - val2); break;
+                case '*': push(val1 * val2); break;
+                case '/': 
+                    if(val2 != 0) {
+                        push(val1 / val2); 
+                    } else {
+                        printf("Division by zero error!\n");
+                        return -1;
+                    }
                     break;
-                case '-':
-                    result = operand1 - operand2;
-                    break;
-                case '*':
-                    result = operand1 * operand2;
-                    break;
-                case '/':
-                    result = operand1 / operand2;
-                    break;
-                default:
-                    printf("Invalid operator\n");
+                default: 
+                    printf("Invalid operator encountered: %c\n", ch);
                     return -1;
             }
-            push(&stack, result);
         }
     }
-    return pop(&stack);
+    return pop();
 }
 
 int main() {
-    char expression[MAX];
+    char exp[MAX];
 
     printf("Enter a postfix expression: ");
-    scanf("%s", expression);
+    scanf("%s", exp);
 
-    int result = evaluatePostfix(expression);
-    printf("Result of the postfix expression is: %d\n", result);
+    int result = evaluatePostfix(exp);
+    if(result != -1) {
+        printf("Result of postfix evaluation: %d\n", result);
+    }
 
     return 0;
 }
