@@ -160,9 +160,9 @@ int main() {
     int running = 1;
     int choice;
     while (running) {
-        printf("\n| 1. insert at front | 2. insert at rear |\n");
-        printf("| 3. insert at index | 4. delete from front |\n");
-        printf("| 5. delete from rear | 6. delete at index |\n");
+        printf("\n| 1. insert at front  | 2. insert at rear    |\n");
+        printf("| 3. insert at index  | 4. delete from front |\n");
+        printf("| 5. delete from rear | 6. delete at index   |\n");
         printf("| 7. display | 8. quit |\n");
         printf("Choice:> ");
         scanf("%d", &choice);
