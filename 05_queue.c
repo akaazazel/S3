@@ -15,6 +15,7 @@ void enqueue(){
     rear = 0;
     queue[rear] = element;
     printf("%d inserted inserted into queue.\n", element);
+    printf("%d", front);
   }else{
     rear++;
     queue[rear] = element;
@@ -25,8 +26,10 @@ void enqueue(){
 void dequeue(){
   int element;
 
-  if((front == -1 && rear == -1) || (front > rear)){
+  if(front == -1 || (front > rear)){
     printf("Queue underflow!\n");
+    front = -1;
+    rear = -1;
   }else{
     element = queue[front];
     printf("%d deleted from the queue.\n", element);
@@ -37,7 +40,7 @@ void dequeue(){
 void display(){
   int element;
 
-  if((front = -1) || front > rear){
+  if((front == -1) || front > rear){
     printf("Queue is empty!");
   }else{
     for(int i = 0; i <= rear; i++){
